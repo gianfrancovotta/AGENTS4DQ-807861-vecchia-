@@ -1,5 +1,3 @@
-anthropic
-pandas
-numpy
-jupyter
-python-dotenv
+ipykernel == 7.2.0
+pandas == 3.0.1
+numpy == 2.4.3
