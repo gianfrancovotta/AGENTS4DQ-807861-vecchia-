@@ -5,7 +5,7 @@ import time
 import re
 from dotenv import load_dotenv
 
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openrouter import ChatOpenRouter
 
 user_msg = "Hey, can you please convert this file into a dataframe for me?"
 msg_to_validator = "The user gave us a .csv that I have already loaded in a dataframe, perform a validation check."
@@ -49,7 +49,7 @@ class Outputs:
 
 class DataOrchestrator:
     def __init__(self):
-        self.model = ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite-preview", temperature=0)
+        self.model = ChatOpenRouter(model="stepfun/step-3.5-flash:free", temperature=0)
 
     def run_loading(self, user_input, file_path):
         prompt = (
@@ -90,7 +90,7 @@ else:
 
 class SchemaValidator:
     def __init__(self):
-        self.model=ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite-preview", temperature=0)
+        self.model=ChatOpenRouter(model="stepfun/step-3.5-flash:free", temperature=0)
     
     def run_validation_check(self, manager_prompt):
         internal_schema_info = {
@@ -138,7 +138,7 @@ print("\n\n")
 
 class CompletenessAnalyst:
     def __init__(self):
-        self.model = ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite-preview", temperature=0)
+        self.model = ChatOpenRouter(model="stepfun/step-3.5-flash:free", temperature=0)
     
     def run_completeness_analysis(self, manager_prompt):
         prompt = (
@@ -203,7 +203,7 @@ def get_dataframe_patterns(df):
 
 class ConsistencyValidator:
     def __init__(self):
-        self.model = ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite-preview", temperature=0)
+        self.model = ChatOpenRouter(model="stepfun/step-3.5-flash:free", temperature=0)
 
     def run_duplicate_detection(self):
         exact_dupes = df.duplicated().sum()
@@ -294,7 +294,7 @@ print("\n\n")
 
 class AnomalyDetector:
     def __init__(self):
-        self.model = ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite-preview", temperature = 0)
+        self.model = ChatOpenRouter(model="stepfun/step-3.5-flash:free", temperature = 0)
 
     def univariate_outlier_detection(self):
         prompt = (
