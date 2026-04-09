@@ -36,29 +36,29 @@ User (CSV upload + prompt)
         │
         ▼
 ┌─────────────────────┐
-│  DataOrchestrator    │  ← Intent detection + CSV loading
+│  DataOrchestrator   │  ← Intent detection + CSV loading
 └────────┬────────────┘
          │
          ▼
 ┌─────────────────────┐
-│  SchemaValidator     │  ← Step 1: Data type + naming convention checks
+│  SchemaValidator    │  ← Step 1: Data type + naming convention checks
 └────────┬────────────┘
          │
          ▼
 ┌─────────────────────┐
-│  CompletenessAnalyst │  ← Step 2: Missing values, placeholders, sparse columns
+│ CompletenessAnalyst │  ← Step 2: Missing values, placeholders, sparse columns
 └────────┬────────────┘
          │
          ▼
 ┌─────────────────────┐
-│  ConsistencyValidator│  ← Step 3: Duplicates, format consistency, cross-column logic
+│ ConsistencyValidator│  ← Step 3: Duplicates, format consistency, cross-column logic
 └────────┬────────────┘
          │
          ▼
 ┌─────────────────────┐
-│  AnomalyDetector     │  ← Step 4: Univariate outliers + categorical anomalies
+│   AnomalyDetector   │  ← Step 4: Univariate outliers + categorical anomalies
 └────────┬────────────┘
-         │
+         │ 
          ▼
    Streamlit Report
 ```
@@ -85,8 +85,8 @@ User (CSV upload + prompt)
 
 ```bash
 # Clone the repository
-git clone https://github.com/<org>/AGENTS4DQ-807861-vecchia.git
-cd AGENTS4DQ-807861-vecchia
+git clone https://github.com/<org>/AGENTS4DQ-807861-v1.git
+cd AGENTS4DQ-807861-v1
 
 # Create and activate a virtual environment
 python -m venv venv
@@ -124,7 +124,7 @@ streamlit run main.py
 
 - **Purpose**: Test generalization to a structurally different NoiPA dataset (personnel activations/terminations, with columns like `mese`, `anno`, `provincia_sede`, `attivazioni`, `cessazioni`, `qualifica`, and intentionally noisy columns such as `3descrizione`, `regione%sede`, `att ivazioni`).
 - **Baseline**: Manual inspection.
-- **Evaluation Metrics**: Same qualitative assessment — the system should flag naming violations (`3descrizione`, `regione%sede`, `att ivazioni`), detect cross-column logic (e.g., `mese`/`anno` coherence with `RATA`), spot province casing inconsistencies (e.g., `Aq` vs `AQ`), and identify redundant mirror columns.
+- **Evaluation Metrics**: Same qualitative assessment: the system should flag naming violations (`3descrizione`, `regione%sede`, `att ivazioni`), detect cross-column logic (e.g., `mese`/`anno` coherence with `RATA`), spot province casing inconsistencies (e.g., `Aq` vs `AQ`), and identify redundant mirror columns.
 
 ---
 
@@ -154,4 +154,4 @@ streamlit run main.py
 
 AGENTS4DQ demonstrates that a multi-agent architecture powered by LLMs can automate data quality assessment on heterogeneous administrative datasets without requiring hard-coded validation rules. By combining statistical methods with LLM-driven reasoning, the system adapts to different schemas and column semantics, making it reusable across various NoiPA data sources.
 
-**Limitations and future work**: The current pipeline runs agents sequentially — parallel execution could improve latency. The remediation step is currently limited to suggestions within the agent outputs rather than producing a corrected dataset file. A natural extension would be adding a dedicated **Remediation Agent** that applies high-confidence fixes and exports a cleaned CSV alongside the quality report. Additionally, incorporating a global **Reliability Score** (0–100) that aggregates findings across all four dimensions would provide a single summary metric for data stakeholders. Finally, expanding support beyond CSV to JSON and database connections would better match the full range of NoiPA data sources.
+**Limitations and future work**: The current pipeline runs agents sequentially: parallel execution could improve latency. The remediation step is currently limited to suggestions within the agent outputs rather than producing a corrected dataset file. A natural extension would be adding a dedicated **Remediation Agent** that applies high-confidence fixes and exports a cleaned CSV alongside the quality report. Additionally, incorporating a global **Reliability Score** (0–100) that aggregates findings across all four dimensions would provide a single summary metric for data stakeholders. Finally, expanding support beyond CSV to JSON and database connections would better match the full range of NoiPA data sources.
