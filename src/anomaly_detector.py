@@ -1,16 +1,14 @@
-from langchain_openrouter import ChatOpenRouter
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 from outputs import Outputs
 import numpy as np
 import pandas as pd
-import json
 
-load_dotenv
+load_dotenv()
 
 class AnomalyDetector:
     def __init__(self):
-        self.model = ChatOpenRouter(model="stepfun/step-3.5-flash:free", temperature=0)
+        self.model = ChatGoogleGenerativeAI(model="gemma-4-31b-it", temperature=0)
 
     def univariate_outlier_detection(self, pattern_report, df, file_to_check):
         prompt = (
@@ -18,13 +16,13 @@ class AnomalyDetector:
             f"This is a sample of the dataframe you are working on: {df.head()}"
             f"This is the regex pattern report of all the columns of the dataframe: {pattern_report}"
             "Task: Identify candidate columns for univariate outlier detection.\n"
-            "A column is a candidate for univariate outlier detection if both of these conditions are true."
-            "1. The pattern report of a column shows that most of the entires are made up of numbers (e.g. the vast majority are in the pattern NN.NNN, N.N, NN.N)"
-            "2. It makes sense to check for numerical outliers in that column using standard deviations (e.g. it would make sense to check for outliers in a column called 'expsenses', but not in a column called 'id')"
+            "A column is a candidate for univariate outlier detection if both of these conditions are true:\n"
+            "1. The pattern report of a column shows that most of the entires are made up of numbers (e.g. the vast majority are in the pattern NN.NNN, N.N, NN.N)\n"
+            "2. It makes sense to check for numerical outliers in that column using standard deviations (e.g. it would make sense to check for outliers in a column called 'expsenses', but not in a column called 'id')\n"
             'Output: Return ONLY a python list in JSON style of strings. Example: ["rate", "spesa"]'
             )
         message = self.model.invoke(prompt)
-        univariate_columns = json.loads(str(Outputs(message.content)))
+        univariate_columns = Outputs(message.content).get_json_obj()
         
         report = ""
         if len(univariate_columns) == 0:
@@ -57,13 +55,13 @@ class AnomalyDetector:
             f"This is a sample of the dataframe you are working on: {df.head()}"
             f"This is the regex pattern report of all the columns of the dataframe: {pattern_report}"
             "Task: Identify candidate columns for categorical outlier detection.\n"
-            "A column is a candidate for categorical outlier detection if both of these conditions are true."
-            "1. The pattern report of a column shows that most of the entires are made up of words (e.g. the vast majority are in the pattern W W, W, W W W)"
-            "2. It makes sense to check for categorical outliers in that column (e.g. it would make sense to check for outliers in a column called 'job title' or 'education level', but not in a column called 'notes' or 'client names')"
+            "A column is a candidate for categorical outlier detection if both of these conditions are true:\n"
+            "1. The pattern report of a column shows that most of the entires are made up of words (e.g. the vast majority are in the pattern W W, W, W W W)\n"
+            "2. It makes sense to check for categorical outliers in that column (e.g. it would make sense to check for outliers in a column called 'job title' or 'education level', but not in a column called 'notes' or 'client names')\n"
             'Output: Return ONLY a python list in JSON style of strings. Example: ["job title", "level"]'
             )
         message = self.model.invoke(prompt)
-        categorical_columns = json.loads(str(Outputs(message.content)))
+        categorical_columns = Outputs(message.content).get_json_obj()
         
         report = ""
         if len(categorical_columns) == 0:

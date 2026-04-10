@@ -8,7 +8,7 @@ load_dotenv()
 
 class DataOrchestrator:
     def __init__(self):
-        self.model = ChatOpenRouter(model="stepfun/step-3.5-flash:free", temperature=0)
+        self.model = ChatGoogleGenerativeAI(model="gemma-4-31b-it", temperature=0)
 
     def run_loading(self, user_input, file_path):
         prompt = (

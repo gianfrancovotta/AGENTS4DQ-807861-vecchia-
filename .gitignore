@@ -8,3 +8,7 @@ reports/*.json
 reports/*.html
 .DS_Store
 AGENTS-FOR-DATA-QUALITY/
+tests.py
+shit.md
+cleaned_data.csv
+

@@ -1,10 +1,8 @@
-from langchain_openrouter import ChatOpenRouter
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 from outputs import Outputs
 import numpy as np
 import pandas as pd
-import json
 
 load_dotenv()
 
@@ -24,11 +22,7 @@ class ConsistencyValidator:
             "If none are found, return an empty list []."
         )
         message = self.model.invoke(prompt)
-        
-        try:
-            key_columns = json.loads(str(Outputs(message.content)))
-        except json.JSONDecodeError:
-            key_columns = []
+        key_columns = Outputs(message.content).get_json_obj()
 
         key_dupes_report = []
         if key_columns:
@@ -38,6 +32,7 @@ class ConsistencyValidator:
                     if dupes > 0:
                         key_dupes_report.append(f"Column '{col}' has {dupes} duplicate entries.")
         
+        df.drop_duplicates(inplace=True)
         return {
             "exact_duplicates": exact_dupes,
             "key_column_duplicates": key_dupes_report if key_dupes_report else "No key duplicates found."
