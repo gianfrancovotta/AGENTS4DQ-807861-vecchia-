@@ -23,6 +23,8 @@ This project builds **AGENTS4DQ**, a multi-agent system that automatically inges
 
 The system produces a structured quality report and presents it through a **Streamlit** web interface with a typewriter-style streaming output. All code is also available in a single self-cointaned Jupyter notebook (`main.ipynb`).
 
+However, we suggest to run ('main.py') in the src folder by typing in the terminal "streamlit run src/main.py" in order to see the graphical interface directly.
+
 ---
 
 ## Section 2 — Methods
