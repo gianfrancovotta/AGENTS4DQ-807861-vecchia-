@@ -73,7 +73,15 @@ pip install -r requirements.txt
 A `.env` file is required at the project root with the following key:
 
 ```
-GOOGLE_API_KEY=<your_google_genai_key>
+GOOGLE_API_KEY=<given_api_key_here>
+
+LANGSMITH_API_KEY=<given_api_key_here>
+
+LANGSMITH_TRACING=true
+
+LANGSMITH_PROJECT=lc-essentials
+
+LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
 ```
 
 To launch the application:
